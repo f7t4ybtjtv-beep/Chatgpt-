@@ -1,0 +1,10 @@
+# Core toolkit works with zero third-party deps (offline heuristics only).
+# Install these to unlock the full set of offline + opt-in network detectors:
+phonenumbers>=8.13      # offline phone metadata (region, carrier, line type)
+dnspython>=2.4          # MX / DNS lookups (opt-in, network)
+requests>=2.31          # HTTP for username/Gravatar checks (opt-in, network)
+python-whois>=0.9       # domain age via WHOIS (opt-in, network)
+
+# Optional AI write-up backend (pick one). Heuristic summary needs neither.
+# anthropic>=0.40
+# openai>=1.40

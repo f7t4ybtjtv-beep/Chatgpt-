@@ -1,0 +1,17 @@
+{
+  "_comment": "Public profile URL templates per platform. {u} is replaced by the username. 'method' head = HEAD/GET and treat 2xx as present; 'absence' lists substrings that, if in the body, mean the profile does NOT exist even on a 200.",
+  "platforms": [
+    {"name": "GitHub",    "url": "https://github.com/{u}",            "absence": ["Not Found"]},
+    {"name": "GitLab",    "url": "https://gitlab.com/{u}",            "absence": ["\"message\":\"404"]},
+    {"name": "Reddit",    "url": "https://www.reddit.com/user/{u}/about.json", "absence": ["\"error\": 404"]},
+    {"name": "Instagram", "url": "https://www.instagram.com/{u}/",    "absence": ["Page Not Found", "Sorry, this page"]},
+    {"name": "X/Twitter", "url": "https://x.com/{u}",                 "absence": ["This account doesn", "page doesn"]},
+    {"name": "Telegram",  "url": "https://t.me/{u}",                  "absence": ["tgme_page_title"]},
+    {"name": "Keybase",   "url": "https://keybase.io/{u}",            "absence": ["404"]},
+    {"name": "Medium",    "url": "https://medium.com/@{u}",           "absence": ["PAGE NOT FOUND", "410"]},
+    {"name": "Pinterest", "url": "https://www.pinterest.com/{u}/",    "absence": ["Sorry! We", "User not found"]},
+    {"name": "TikTok",    "url": "https://www.tiktok.com/@{u}",       "absence": ["Couldn't find this account"]},
+    {"name": "Twitch",    "url": "https://m.twitch.tv/{u}",           "absence": ["Sorry. Unless you"]},
+    {"name": "Steam",     "url": "https://steamcommunity.com/id/{u}", "absence": ["The specified profile could not be found"]}
+  ]
+}
