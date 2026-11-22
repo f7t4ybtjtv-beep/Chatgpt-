@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whocontacts"
+version = "0.1.0"
+description = "Boîte à outils OSINT open source assistée par IA pour identifier un contact entrant (sources publiques, usage défensif)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = ["osint", "security", "anti-phishing", "anti-scam", "defensive", "ai"]
+authors = [{ name = "whocontacts contributors" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Security",
+]
+dependencies = []  # le cœur ne dépend que de la bibliothèque standard
+
+[project.optional-dependencies]
+phone = ["phonenumbers>=8.13"]
+ai = ["anthropic>=0.39"]
+all = ["phonenumbers>=8.13", "anthropic>=0.39"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+whocontacts = "whocontacts.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/"
+Issues = "https://github.com/"
+
+[tool.setuptools.packages.find]
+include = ["whocontacts*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

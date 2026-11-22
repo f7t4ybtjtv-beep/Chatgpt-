@@ -1,0 +1,5 @@
+# Dépendances OPTIONNELLES — whocontacts fonctionne sans elles.
+# Installez-les pour activer les enrichissements correspondants.
+
+phonenumbers>=8.13      # téléphone : opérateur, type de ligne, validation précise
+anthropic>=0.39         # couche IA Claude (sinon : moteur par règles local)
