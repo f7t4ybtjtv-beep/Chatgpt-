@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whocontacts"
+version = "0.1.0"
+description = "OSINT défensif + IA pour identifier qui vous contacte (e-mail, numéro, domaine, pseudo)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "WhoContacts contributors" }]
+keywords = ["osint", "security", "anti-scam", "phishing", "defensive", "contact-verification"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
+]
+# Core has ZERO required dependencies — it runs on the standard library alone.
+dependencies = []
+
+[project.optional-dependencies]
+# Richer results when installed, but never required.
+full = [
+  "phonenumbers>=8.13",   # carrier + line type for phone numbers
+  "dnspython>=2.4",       # MX records for domains
+]
+ai = [
+  "anthropic>=0.39",      # Claude-powered narrative summary
+]
+dev = [
+  "pytest>=7.0",
+]
+
+[project.scripts]
+whocontacts = "whocontacts.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/f7t4ybtjtv-beep/Chatgpt-"
+Issues = "https://github.com/f7t4ybtjtv-beep/Chatgpt-/issues"
+
+[tool.setuptools.packages.find]
+include = ["whocontacts*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
