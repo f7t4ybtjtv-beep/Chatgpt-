@@ -2,7 +2,7 @@
 
 **An open-source OSINT toolkit — with an AI layer — to help you identify and risk-assess *who is contacting you*.**
 
-Someone emails, calls, or DMs you out of the blue. Is it a real person? A business? A scammer or a bot? `contact-identifier` takes the identifier they used to reach you — an **email**, **phone number**, **username**, or **domain** — gathers signals from public/open sources, scores the risk, and writes you a short, plain-language verdict.
+Someone emails, calls, or DMs you out of the blue. Is it a real person? A business? A scammer or a bot? `contact-identifier` takes the identifier they used to reach you — an **email**, **phone number**, **username**, **domain**, or **IP address** — gathers signals from public/open sources, scores the risk, and writes you a short, plain-language verdict.
 
 It runs **fully offline by default** (deterministic heuristics, no API keys, no network) and can optionally pull in live public lookups and an LLM write-up when you turn them on.
 
@@ -43,6 +43,7 @@ Python 3.10+.
 contact-id someone@example.com
 contact-id "+1 202-555-0142" --region US
 contact-id johndoe --kind username
+contact-id 203.0.113.9
 contact-id suspicious-site.top --json
 ```
 
@@ -71,6 +72,7 @@ python examples/demo.py
 | **phone** | validity, country/region, carrier, line type (VOIP / toll-free / premium-rate scam flags) — all via offline `phonenumbers` metadata | — |
 | **username** | candidate public profile URLs | presence check across GitHub, Reddit, Instagram, X, Telegram, TikTok, and more (handle-reuse signal) |
 | **domain** | punycode/lookalike detection, low-trust TLDs | WHOIS domain age (young domains = classic scam flag), DNS |
+| **IP** | IPv4/IPv6 validation, special-use classification (private / loopback / reserved / documentation-only "fake" addresses) | reverse DNS (PTR) with hosting/VPS/cloud-provider detection, RDAP registered-network lookup |
 
 Each finding is a **Signal** with a risk level (`info` / `low` / `medium` / `high`). The report's overall risk is the worst signal, bumped up when several medium flags cluster.
 
@@ -119,7 +121,7 @@ src/contact_identifier/
   core.py            # orchestration: route identifier -> detectors -> report
   models.py          # Signal / Report / Risk dataclasses
   utils.py           # identifier type detection + safe HTTP
-  detectors/         # email, phone, username, domain
+  detectors/         # email, phone, username, domain, ip
   ai/summarizer.py   # heuristic + LLM write-up (pluggable)
   cli.py             # contact-id command
 data/                # editable disposable-domain + platform lists

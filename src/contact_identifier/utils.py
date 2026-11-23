@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ipaddress
 import os
 import re
 from typing import Optional
@@ -18,11 +19,13 @@ USERNAME_RE = re.compile(r"^@?[A-Za-z0-9_.\-]{2,40}$")
 def detect_kind(value: str) -> str:
     """Best-effort classification of a raw identifier.
 
-    Returns one of: email, phone, domain, username, unknown.
+    Returns one of: email, ip, phone, domain, username, unknown.
     """
     v = value.strip()
     if EMAIL_RE.match(v):
         return "email"
+    if _looks_like_ip(v):
+        return "ip"
     if DOMAIN_RE.match(v):
         return "domain"
     # Phone must contain enough digits to be plausible.
@@ -32,6 +35,18 @@ def detect_kind(value: str) -> str:
     if USERNAME_RE.match(v):
         return "username"
     return "unknown"
+
+
+def _looks_like_ip(value: str) -> bool:
+    """True if *value* is a valid IPv4/IPv6 literal (optionally [bracketed])."""
+    candidate = value
+    if candidate.startswith("[") and "]" in candidate:
+        candidate = candidate[1:candidate.index("]")]
+    try:
+        ipaddress.ip_address(candidate)
+        return True
+    except ValueError:
+        return False
 
 
 def network_allowed() -> bool:

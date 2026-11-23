@@ -5,6 +5,7 @@ Examples
     contact-id someone@example.com
     contact-id "+1 202-555-0142" --region US
     contact-id johndoe --kind username
+    contact-id 203.0.113.9
     contact-id example.com --json
     echo -e "a@b.com\\nbob" | contact-id --stdin
 """
@@ -43,11 +44,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="contact-id",
         description="OSINT toolkit: identify and risk-assess who is contacting you "
-                    "(email / phone / username / domain). Public data only. "
+                    "(email / phone / username / domain / IP). Public data only. "
                     "Use responsibly and lawfully — see the README ethics notice.",
     )
     parser.add_argument("identifiers", nargs="*", help="one or more identifiers to check")
-    parser.add_argument("--kind", choices=["email", "phone", "username", "domain"],
+    parser.add_argument("--kind", choices=["email", "phone", "username", "domain", "ip"],
                         help="force the identifier type instead of auto-detecting")
     parser.add_argument("--region", help="default ISO region for phone numbers without a + code (e.g. US, FR)")
     parser.add_argument("--json", action="store_true", help="output machine-readable JSON")

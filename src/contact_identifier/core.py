@@ -10,6 +10,7 @@ from .detectors import email as email_detector
 from .detectors import phone as phone_detector
 from .detectors import username as username_detector
 from .detectors import domain as domain_detector
+from .detectors import ip as ip_detector
 from .ai import summarize
 
 
@@ -28,7 +29,8 @@ def identify(
         The raw identifier someone used to contact you (email, phone, handle,
         domain).
     kind:
-        Force a type instead of auto-detecting ("email"|"phone"|"username"|"domain").
+        Force a type instead of auto-detecting
+        ("email"|"phone"|"username"|"domain"|"ip").
     default_region:
         ISO region (e.g. "US", "FR") used when a phone number has no country code.
     summarize_report:
@@ -48,9 +50,11 @@ def identify(
         username_detector.run(value, report)
     elif resolved == "domain":
         domain_detector.run(value, report)
+    elif resolved == "ip":
+        ip_detector.run(value, report)
     else:
         report.add_error(
-            f"could not classify '{value}'. Pass kind= to force email/phone/username/domain."
+            f"could not classify '{value}'. Pass kind= to force email/phone/username/domain/ip."
         )
 
     if summarize_report:
