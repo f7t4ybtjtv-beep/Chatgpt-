@@ -1,27 +1,36 @@
-"""Quick demo: run a handful of sample identifiers through the toolkit.
+#!/usr/bin/env python3
+"""Démo rapide de WhoContacts, entièrement hors-ligne (aucune requête réseau).
 
-    python examples/demo.py
+    python3 examples/demo.py
 
-Runs fully offline (no network, no API key) using the heuristic summary.
+Montre comment appeler la bibliothèque et lire un rapport.
 """
 
+from __future__ import annotations
+
+import os
 import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+# Allow running directly (`python3 examples/demo.py`) without installing.
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from contact_identifier import identify  # noqa: E402
+from whocontacts import identify  # noqa: E402
+from whocontacts.report import render_text
 
-SAMPLES = [
-    "newsletter@acme-corp.com",
-    "throwaway@mailinator.com",
-    "+1 650-253-0000",
-    "xn--pple-43d.com",     # punycode "apple" lookalike
-    "cool_handle",
+EXEMPLES = [
+    "x7f392aa@mailinator.com",   # adresse jetable -> suspect
+    "secure-paypa1-login.com",   # imitation de marque -> suspect
+    "contact@gmail.com",         # fournisseur grand public -> neutre
+    "+33 6 12 34 56 78",         # numéro FR -> signal insuffisant hors-ligne
 ]
 
-for sample in SAMPLES:
-    report = identify(sample)
-    print("=" * 64)
-    print(report.summary)
-    print()
+
+def main() -> None:
+    for cible in EXEMPLES:
+        rep = identify(cible, online=False, use_ai=False)
+        print(render_text(rep))
+        print("\n" + "=" * 62 + "\n")
+
+
+if __name__ == "__main__":
+    main()

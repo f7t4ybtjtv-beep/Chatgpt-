@@ -1,3 +1,4 @@
+# Python
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -7,9 +8,23 @@ dist/
 .venv/
 venv/
 env/
+
+# Tooling
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+htmlcov/
+
+# Secrets / local config
 .env
-*.log
+*.local
+config.local.json
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Outputs
+*.report.json
+out/

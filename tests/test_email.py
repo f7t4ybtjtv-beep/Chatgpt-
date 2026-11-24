@@ -1,40 +1,40 @@
-from contact_identifier import identify, Risk
+from whocontacts.collectors.email_collector import EmailCollector
+from whocontacts.utils.disposable import is_disposable
 
 
-def test_disposable_email_is_high_risk():
-    r = identify("scammer@mailinator.com")
-    assert r.kind == "email"
-    labels = [s.label for s in r.signals]
-    assert "Disposable email domain" in labels
-    assert r.risk == Risk.HIGH
+def _keys(signals):
+    return {s.key: s for s in signals}
 
 
-def test_free_provider_is_low_risk():
-    r = identify("someone@gmail.com")
-    labels = [s.label for s in r.signals]
-    assert "Free webmail provider" in labels
-    assert r.risk in (Risk.LOW, Risk.INFO)
+def test_disposable_detection():
+    assert is_disposable("mailinator.com")
+    assert is_disposable("foo.mailinator.com")
+    assert not is_disposable("gmail.com")
 
 
-def test_gmail_canonical_form():
-    r = identify("john.doe+newsletter@gmail.com")
-    canon = [s for s in r.signals if s.label == "Gmail canonical form"]
-    assert canon and canon[0].value == "johndoe@gmail.com"
+def test_disposable_email_offline():
+    sig = _keys(EmailCollector(online=False).run("x@mailinator.com"))
+    assert "disposable_domain" in sig
+    assert sig["disposable_domain"].risk > 0.5
 
 
-def test_role_address():
-    r = identify("support@acme.com")
-    labels = [s.label for s in r.signals]
-    assert "Role / automated address" in labels
+def test_major_provider_offline():
+    sig = _keys(EmailCollector(online=False).run("alice@gmail.com"))
+    assert sig["major_provider"].value == "gmail.com"
+    assert "offline_mode" in sig  # no network calls were attempted
 
 
-def test_custom_domain_is_info():
-    r = identify("ceo@acme-corp.io")
-    labels = [s.label for s in r.signals]
-    assert "Custom / organisational domain" in labels
+def test_role_account():
+    sig = _keys(EmailCollector(online=False).run("support@acme.com"))
+    assert "role_account" in sig
 
 
-def test_summary_is_populated():
-    r = identify("x@mailinator.com")
-    assert r.summary
-    assert "HIGH" in r.summary
+def test_lookalike_domain():
+    sig = _keys(EmailCollector(online=False).run("help@secure-paypa1.com"))
+    assert "lookalike_domain" in sig
+    assert sig["lookalike_domain"].risk >= 0.7
+
+
+def test_invalid_email():
+    sig = _keys(EmailCollector(online=False).run("not-an-email"))
+    assert "invalid" in sig
