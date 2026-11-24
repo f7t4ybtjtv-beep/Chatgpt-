@@ -36,6 +36,7 @@ dev = [
 
 [project.scripts]
 whocontacts = "whocontacts.cli:main"
+whocontacts-web = "whocontacts.web:main"
 
 [project.urls]
 Homepage = "https://github.com/f7t4ybtjtv-beep/Chatgpt-"

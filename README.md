@@ -81,6 +81,21 @@ whocontacts "a@b.com" --json        # sortie machine (intégration)
 whocontacts "a@b.com" --kind domain # forcer le type
 ```
 
+### Interface web (locale, sans dépendance)
+
+Une petite page web conviviale, servie par la bibliothèque standard (aucun
+framework). Le moteur d'analyse tourne en local ; rien n'est exposé sur Internet
+(écoute sur `127.0.0.1` par défaut).
+
+```bash
+whocontacts-web --open          # ouvre http://127.0.0.1:8000 dans le navigateur
+python3 -m whocontacts.web --port 9000
+```
+
+Collez un e-mail, un numéro, un domaine, une IP ou un pseudo, choisissez
+« hors-ligne » ou « sans IA » si besoin, et obtenez le verdict, le score et le
+détail des signaux.
+
 Le **code de sortie** encode le verdict (pratique en script) :
 `0` fiable/insuffisant · `1` incertain · `2` suspect.
 
