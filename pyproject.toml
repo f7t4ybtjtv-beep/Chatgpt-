@@ -1,40 +1,48 @@
 [build-system]
-requires = ["setuptools>=64", "wheel"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "contact-identifier"
+name = "whocontacts"
 version = "0.1.0"
-description = "Open-source OSINT toolkit with an AI layer to identify and risk-assess who is contacting you."
+description = "OSINT défensif + IA pour identifier qui vous contacte (e-mail, numéro, domaine, pseudo)."
 readme = "README.md"
-requires-python = ">=3.10"
-license = { text = "MIT" }
-authors = [{ name = "contact-identifier contributors" }]
-keywords = ["osint", "security", "anti-fraud", "phishing", "scam-detection", "identity"]
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "WhoContacts contributors" }]
+keywords = ["osint", "security", "anti-scam", "phishing", "defensive", "contact-verification"]
 classifiers = [
-  "Programming Language :: Python :: 3",
-  "License :: OSI Approved :: MIT License",
-  "Topic :: Security",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
 ]
+# Core has ZERO required dependencies — it runs on the standard library alone.
 dependencies = []
 
 [project.optional-dependencies]
-# Offline metadata / network detectors
-full = ["phonenumbers>=8.13", "dnspython>=2.4", "requests>=2.31", "python-whois>=0.9"]
-# AI write-up backends (either one)
-llm = ["anthropic>=0.40"]
-openai = ["openai>=1.40"]
-dev = ["pytest>=7.4"]
+# Richer results when installed, but never required.
+full = [
+  "phonenumbers>=8.13",   # carrier + line type for phone numbers
+  "dnspython>=2.4",       # MX records for domains
+]
+ai = [
+  "anthropic>=0.39",      # Claude-powered narrative summary
+]
+dev = [
+  "pytest>=7.0",
+]
 
 [project.scripts]
-contact-id = "contact_identifier.cli:main"
+whocontacts = "whocontacts.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/f7t4ybtjtv-beep/Chatgpt-"
+Issues = "https://github.com/f7t4ybtjtv-beep/Chatgpt-/issues"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+include = ["whocontacts*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

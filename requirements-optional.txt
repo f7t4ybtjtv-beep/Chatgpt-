@@ -1,0 +1,7 @@
+# Optional dependencies — the tool runs WITHOUT any of these (stdlib fallback).
+# Install for richer results:
+#   pip install -r requirements-optional.txt
+
+phonenumbers>=8.13      # phone carrier + line type
+dnspython>=2.4          # domain MX records
+anthropic>=0.39         # Claude-powered AI summary (needs ANTHROPIC_API_KEY)
